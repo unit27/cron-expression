@@ -19,9 +19,8 @@ matrix:
     - php: nightly
     - php: nightly
       env: dependencies=lowest
-  allow_failures:
     - php: nightly
-  fast_finish: true
+      install: travis_retry composer install --no-interaction --prefer-dist --ignore-platform-reqs
 
 install:
     - |
