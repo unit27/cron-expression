@@ -26,7 +26,7 @@ jobs:
       - name: PHPStan
         uses: docker://oskarstark/phpstan-ga
         with:
-          args: analyse  --level=max src tests
+          args: analyse --level=max src
 
   phpunit:
     name: PHPUnit - PHP ${{ matrix.php }}
