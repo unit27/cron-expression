@@ -23,7 +23,7 @@ Installing
 Add the dependency to your project:
 
 ```bash
-composer require dragonmantank/cron-expression
+composer require unit27/cron-expression
 ```
 
 Usage
