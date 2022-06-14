@@ -85,6 +85,7 @@ Requirements
 
 Projects that Use cron-expression
 =================================
+* Available as a [Gaia Component - unit27/cron-expression](https://packages.unit27.net)
 * Part of the [Laravel Framework](https://github.com/laravel/framework/)
 * Available as a [Symfony Bundle - setono/cron-expression-bundle](https://github.com/Setono/CronExpressionBundle)
 * Framework agnostic, PHP-based job scheduler - [Crunz](https://github.com/lavary/crunz)
