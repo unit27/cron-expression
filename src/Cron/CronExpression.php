@@ -28,14 +28,15 @@ use Webmozart\Assert\Assert;
  */
 class CronExpression
 {
-    public const MINUTE = 0;
-    public const HOUR = 1;
-    public const DAY = 2;
-    public const MONTH = 3;
-    public const WEEKDAY = 4;
+    public const SECOND = 0;
+    public const MINUTE = 1;
+    public const HOUR = 2;
+    public const DAY = 3;
+    public const MONTH = 4;
+    public const WEEKDAY = 5;
 
     /** @deprecated */
-    public const YEAR = 5;
+    public const YEAR = 6;
 
     public const MAPPINGS = [
         '@yearly' => '0 0 1 1 *',
@@ -72,6 +73,7 @@ class CronExpression
         self::WEEKDAY,
         self::HOUR,
         self::MINUTE,
+        self::SECOND,
     ];
 
     /**
@@ -453,12 +455,14 @@ class CronExpression
         }
 
         Assert::isInstanceOf($currentDate, DateTime::class);
+
         $currentDate->setTimezone(new DateTimeZone($timeZone));
-        // Workaround for setTime causing an offset change: https://bugs.php.net/bug.php?id=81074
-        $currentDate = DateTime::createFromFormat("!Y-m-d H:iO", $currentDate->format("Y-m-d H:iP"), $currentDate->getTimezone());
+        $currentDate = DateTime::createFromFormat("!Y-m-d H:i:s T", $currentDate->format("Y-m-d H:i:s T"), $currentDate->getTimezone());
+
         if ($currentDate === false) {
             throw new \RuntimeException('Unable to create date from format');
         }
+
         $currentDate->setTimezone(new DateTimeZone($timeZone));
 
         $nextRun = clone $currentDate;
@@ -510,6 +514,7 @@ class CronExpression
                 $satisfied = false;
                 // Get the field object used to validate this part
                 $field = $fields[$position];
+
                 // Check if this is singular or a list
                 if (false === strpos($part, ',')) {
                     $satisfied = $field->isSatisfiedBy($nextRun, $part, $invert);

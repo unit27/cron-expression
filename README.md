@@ -3,6 +3,8 @@ PHP Cron Expression Parser
 
 [![Latest Stable Version](https://poser.pugx.org/dragonmantank/cron-expression/v/stable.png)](https://packagist.org/packages/dragonmantank/cron-expression) [![Total Downloads](https://poser.pugx.org/dragonmantank/cron-expression/downloads.png)](https://packagist.org/packages/dragonmantank/cron-expression) [![Build Status](https://secure.travis-ci.org/dragonmantank/cron-expression.png)](http://travis-ci.org/dragonmantank/cron-expression) [![StyleCI](https://github.styleci.io/repos/103715337/shield?branch=master)](https://github.styleci.io/repos/103715337)
 
+*WARNING* Support for seconds has been added to the original library.
+
 The PHP cron expression parser can parse a CRON expression, determine if it is
 due to run, calculate the next run date of the expression, and calculate the previous
 run date of the expression.  You can calculate dates far into the future or past by
@@ -55,15 +57,16 @@ CRON Expressions
 
 A CRON expression is a string representing the schedule for a particular command to execute.  The parts of a CRON schedule are as follows:
 
-    *    *    *    *    *
-    -    -    -    -    -
-    |    |    |    |    |
-    |    |    |    |    |
-    |    |    |    |    +----- day of week (0 - 7) (Sunday=0 or 7)
-    |    |    |    +---------- month (1 - 12)
-    |    |    +--------------- day of month (1 - 31)
-    |    +-------------------- hour (0 - 23)
-    +------------------------- min (0 - 59)
+    *    *    *    *    *    *
+    -    -    -    -    -    -
+    |    |    |    |    |    |
+    |    |    |    |    |    |
+    |    |    |    |    |    +----- day of week (0 - 7) (Sunday=0 or 7)
+    |    |    |    |    +---------- month (1 - 12)
+    |    |    |    +--------------- day of month (1 - 31)
+    |    |    +-------------------- hour (0 - 23)
+    |    +------------------------- min (0 - 59)
+    +------------------------------ sec (0 - 59)    
 
 This library also supports a few macros:
 

@@ -33,6 +33,8 @@ class FieldFactory implements FieldFactoryInterface
     private function instantiateField(int $position): FieldInterface
     {
         switch ($position) {
+            case CronExpression::SECOND:
+                return new SecondsField();
             case CronExpression::MINUTE:
                 return new MinutesField();
             case CronExpression::HOUR:
