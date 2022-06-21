@@ -39,13 +39,13 @@ class CronExpression
     public const YEAR = 6;
 
     public const MAPPINGS = [
-        '@yearly' => '0 0 1 1 *',
-        '@annually' => '0 0 1 1 *',
-        '@monthly' => '0 0 1 * *',
-        '@weekly' => '0 0 * * 0',
-        '@daily' => '0 0 * * *',
-        '@midnight' => '0 0 * * *',
-        '@hourly' => '0 * * * *',
+        '@yearly' => '0 0 0 1 1 *',
+        '@annually' => '0 0 0 1 1 *',
+        '@monthly' => '0 0 0 1 * *',
+        '@weekly' => '0 0 0 * * 0',
+        '@daily' => '0 0 0 * * *',
+        '@midnight' => '0 0 0 * * *',
+        '@hourly' => '0 0 * * * *',
     ];
 
     /**
@@ -61,7 +61,7 @@ class CronExpression
     /**
      * @var int Max iteration count when searching for next run date
      */
-    protected $maxIterationCount = 1000;
+    protected $maxIterationCount = 3000;
 
     /**
      * @var array Order in which to test of cron parts
@@ -464,7 +464,6 @@ class CronExpression
         }
 
         $currentDate->setTimezone(new DateTimeZone($timeZone));
-
         $nextRun = clone $currentDate;
 
         // We don't have to satisfy * or null fields
@@ -480,8 +479,8 @@ class CronExpression
         }
 
         if (isset($parts[self::DAY]) && isset($parts[self::WEEKDAY])) {
-            $domExpression = sprintf('%s %s %s %s *', $this->getExpression(0), $this->getExpression(1), $this->getExpression(2), $this->getExpression(3));
-            $dowExpression = sprintf('%s %s * %s %s', $this->getExpression(0), $this->getExpression(1), $this->getExpression(3), $this->getExpression(4));
+            $domExpression = sprintf('%s %s %s %s %s *', $this->getExpression(0), $this->getExpression(1), $this->getExpression(2), $this->getExpression(3), $this->getExpression(4));
+            $dowExpression = sprintf('%s %s %s * %s %s', $this->getExpression(0), $this->getExpression(1), $this->getExpression(2), $this->getExpression(4), $this->getExpression(5));
 
             $domExpression = new self($domExpression);
             $dowExpression = new self($dowExpression);
@@ -508,6 +507,9 @@ class CronExpression
             return $combined[$nth];
         }
 
+        // Sort starting from seconds
+        \ksort($parts);
+
         // Set a hard limit to bail on an impossible date
         for ($i = 0; $i < $this->maxIterationCount; ++$i) {
             foreach ($parts as $position => $part) {
@@ -531,14 +533,13 @@ class CronExpression
                 // If the field is not satisfied, then start over
                 if (!$satisfied) {
                     $field->increment($nextRun, $invert, $part);
-
                     continue 2;
                 }
             }
 
             // Skip this match if needed
             if ((!$allowCurrentDate && $nextRun == $currentDate) || --$nth > -1) {
-                $this->fieldFactory->getField(self::MINUTE)->increment($nextRun, $invert, $parts[self::MINUTE] ?? null);
+                $this->fieldFactory->getField(self::SECOND)->increment($nextRun, $invert, $parts[self::SECOND] ?? null);
                 continue;
             }
 

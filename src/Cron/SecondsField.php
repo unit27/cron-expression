@@ -37,7 +37,7 @@ class SecondsField extends AbstractField
      * {@inheritdoc}
      * {@inheritDoc}
      *
-     * @param string|null                  $parts
+     * @param string|null $parts
      */
     public function increment(DateTimeInterface &$date, $invert = false, $parts = null): FieldInterface
     {
@@ -46,7 +46,7 @@ class SecondsField extends AbstractField
             return $this;
         }
 
-        $current_second = (int) $date->format("s");
+        $current_second = (int)$date->format("s");
 
         $parts = false !== strpos($parts, ",") ? explode(",", $parts) : [$parts];
         $seconds = [];
