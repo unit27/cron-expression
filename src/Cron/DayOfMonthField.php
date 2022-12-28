@@ -24,6 +24,7 @@ use DateTimeInterface;
  * day-of-month is a single day, not a range or list of days.
  *
  * @author Michael Dowling <mtdowling@gmail.com>
+ *         Przemyslaw Ankowski <przemyslaw.ankowski@gmail.com>
  */
 class DayOfMonthField extends AbstractField
 {
@@ -49,7 +50,7 @@ class DayOfMonthField extends AbstractField
     private static function getNearestWeekday(int $currentYear, int $currentMonth, int $targetDay): ?DateTime
     {
         $tday = str_pad((string) $targetDay, 2, '0', STR_PAD_LEFT);
-        $target = DateTime::createFromFormat('Y-m-d', "${currentYear}-${currentMonth}-${tday}");
+        $target = DateTime::createFromFormat('Y-m-d', \sprintf("%d:%d:%d", $currentYear, $currentMonth, $tday));
 
         if ($target === false) {
             return null;
